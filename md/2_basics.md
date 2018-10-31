@@ -197,6 +197,7 @@ public class Book {
   * alle Unit-Tests des Projekts ausführen
 
 
+
 ## Relationen
 
 * `@OneToOne`
@@ -219,3 +220,145 @@ Note:
 
 
 ## One-To-One
+
+<div class="uml">
+[Pirat|kiste: Seemannskiste]1 -> 1..0[Seemannskiste]
+</div>
+
+<div class="uml">
+[piraten|id;kisten_id] -> [kisten|id]
+</div>
+
+
+## One-To-Many
+
+<div class="uml">
+[Schiff|crew: Collection]1 o-> *[Pirat|schiff: Schiff]
+</div>
+
+<div class="uml">
+[schiffe|id] <- [piraten|id; schiff_id]
+</div>
+
+
+## Many-To-Many
+
+<div class="uml">
+[Schatz|besitzer: Collection ]* <-> *[Pirat|beute: Collection]
+</div>
+
+<div class="uml">
+[schaetze|id] <- [beute|pirat_id; schatz_id]
+[beute] -> [piraten|id]
+</div>
+
+
+## Relationen
+
+* können uni- oder bi-direktional
+* Relationen werden von einer Seite „gemanaged“
+* JPA verwaltet bidirektionale Relationen nicht
+  * Änderungen an der Gegenseite gehen verloren
+  * führt u.U. zu Exceptions
+* Änderungen an Relationen können kaskadiert werden
+  * Speichern/Löschen(!)/Neuladen
+* Sonderfall: `deleteOrphan`
+
+
+## Attribute
+
+* `optional(boolean)`
+* `fetch(FetchType)`
+* `targetEntity(Class)`
+* `cascade(CascadeType[])`
+  * `ALL, PERSIST, MERGE, REMOVE, REFRESH`
+* `orphanRemoval(boolean)`
+* `mappedBy(String)`
+  * nur an der inversen Seite der Relation
+  * Pflicht bei zwei Relationen zum selben Typ
+
+
+## Übung 2
+1. Relationen zwischen Klassen erstellen
+   * Book verwaltet alle Relationen
+   * Beim Speichern/Aktualiseren eines Buchs, sollen auch Autoren und Verlag gespeichert werden.
+   * Jede Operation auf Book wirkt sich auf ISBN aus.
+2. Unit-Tests vervollständigen und ausführen
+  * Wie wird Autor/Verlag ein Buch hinzugefügt?
+  * Wie lässt sich das Verknüpfen sicherer gestalten?
+3. Welche Tabellen und Schlüssel wurden erstellt?
+
+
+
+## Entity-Manager
+
+* Verbindung zur Datenbank
+* verwaltet Sessions und Transaktionen
+* führt Abfragen aus
+* verwaltet Persistenz-Lifecycle
+
+
+## Entity Lifecycle
+
+<div class="uml">
+#spacing: 130
+[<state>new] em.persist() -> [<state>managed]
+[<state>detached] em.detach(), em.close() <-> em.merge() [<state>managed]
+[<state>managed] -> em.remove() [<state>removed]
+</div>
+
+
+### EntityManagerFactory
+
+* erstellt EntityManager für jeweiligen PersistenceContext
+* lädt Mapping aus Annotations oder XML
+* Konfiguration über persistence.xml
+* initialisiert über statische Methode
+  ```java
+  Persistence.createEntityManagerFactory("Bookstore");
+  ```
+* Konstruktion sehr teuer!
+
+
+## EntityManager
+
+```java
+EntityManagerFactory emf =
+  Persistence.createEntityManagerFactory("Bookstore");
+
+EntityManager em = emf.getEntityManager();
+
+em.persist(...)
+em.merge(...)
+em.find(...)
+em.remove(...)
+em.refresh(...)
+```
+
+
+## EntityManager-Transactions
+
+```java
+Transaction tx = EntityTransaction.getTransaction();
+try {
+    tx.begin();
+    /* ... */
+    tx.commit();
+} catch(Exception e) {
+    tx.rollback();
+}
+```
+
+
+## Übung 3
+
+Entferne die Cascade-Option in Book für publisher. Was passiert nun, wenn ein neues Buch mit neuem Verlag gespeichert wird?
+
+
+## Provider Specific Annotations
+
+* mischen von Standard- und Vendor-Annotations möglich → Verhalten **nicht** spezifiziert
+* unter Umständen für nicht im Standard abgedeckte Fälle notwendig (insb. JPA1)
+* Kompatibilität?
+* Vendor/Version?
+* Abhängigkeiten?
