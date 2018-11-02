@@ -5,7 +5,7 @@
 
 * JPA-Spec
   * in Java EE enthalten
-  * hibernate-jpa-2.1-api-[VERSION].jar
+  * jpa-2.1-api-[VERSION].jar
 * Persistence Provider
   * durch Container bereitgestellt
   * hibernate-entitymanager-[VERSION].jar
@@ -22,7 +22,7 @@
 
 ## persistence.xml (JavaEE)
 
-```
+```xml
 <persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence"
     version="2.2">
 
@@ -308,7 +308,7 @@ Note:
 </div>
 
 
-### EntityManagerFactory
+### Entity-Manager-Factory
 
 * erstellt EntityManager für jeweiligen PersistenceContext
 * lädt Mapping aus Annotations oder XML
@@ -320,7 +320,7 @@ Note:
 * Konstruktion sehr teuer!
 
 
-## EntityManager
+## Entity-Manager
 
 ```java
 EntityManagerFactory emf =
@@ -336,7 +336,7 @@ em.refresh(...)
 ```
 
 
-## EntityManager-Transactions
+## Entity-Manager-Transactions
 
 ```java
 Transaction tx = EntityTransaction.getTransaction();

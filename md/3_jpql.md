@@ -1,4 +1,4 @@
-# JPQL
+# Java Persistence Query Language (JPQL)
 
 
 ## Einführung
@@ -20,11 +20,11 @@
 SELECT * FROM piraten p WHERE p.holzbeine=1;
 ```
 
-* piraten entspricht Tabellenname
-* p ist ein Alias (optional)
-* p.holzbeine ist eine Tabellenspalte
-* als Ergebnis werden einzelne Spalten, oder alle (*) spezifiziert
-* häufig Trennzeichen (Semikolon)
+* `piraten` entspricht Tabellenname
+* `p` ist ein Alias (optional)
+* `p.holzbeine` ist eine Tabellenspalte
+* als Ergebnis werden einzelne Spalten, oder alle (`*`) spezifiziert
+* häufig Trennzeichen (`;`)
 
 
 ## JPQL
@@ -33,11 +33,11 @@ SELECT * FROM piraten p WHERE p.holzbeine=1;
 SELECT p FROM Pirat p WHERE p.holzbeine=1
 ```
 
-Pirat ist eine Entity
-p ist ein Alias (Pflicht)
-p.holzbeine ist eine Feldname/Property
-als Ergebnis werden Entities, Felder oder Projektionen spezifiziert
-Semikolon entfällt
+* `Pirat` ist eine Entity
+* `p` ist ein Alias (Pflicht)
+* `p.holzbeine` ist eine Feldname/Property
+* als Ergebnis werden Entities, Felder oder Projektionen spezifiziert
+* Semikolon entfällt
 
 
 ## JPA-Kurzform (Achtung!)
@@ -51,7 +51,8 @@ FROM Pirat p WHERE p.holzbeine=1
 ```
 
 in JPA 2.0 nicht mehr geduldet!
-(Hibernate drückt aber ein Auge zu)
+
+<small>(Hibernate drückt aber ein Auge zu)</small>
 
 
 ## Parameter
@@ -177,7 +178,23 @@ public Pirat findPirate(String name) throws NonUniqueResultException {
 	}
 }
 ```
-Übung?
+
+
+## Streams
+
+neu in JPA 2.2
+```java
+Stream<Pirat> em
+    .createNamedQuery("pirat.all", Pirat.class)
+    .getResultStream();
+```
+
+* Implementierung Provider-abhängig
+    * Hibernate verwendet Cursor
+* bitte vorsichtig verwenden! (filtering, sorting...)
+
+
+# Übung?
 
 
 ## Fluent Interface

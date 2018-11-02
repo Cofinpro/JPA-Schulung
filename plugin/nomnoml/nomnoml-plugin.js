@@ -1,12 +1,16 @@
 (function () {
     const nodes = document.getElementsByClassName('uml');
 
-    const option_prefix = appendOptions({spacing: 100, arrowSize: 0.5, direction: 'right', fill: '#fff'});
+    const option_prefix = appendOptions({spacing: 100, arrowSize: 0.5, direction: 'right', fill: '#fff', zoom: 1.5});
 
     for (let i = 0, len = nodes.length; i < len; i++) {
         const source = option_prefix + nodes[i].textContent.trim();
-        nodes[i].innerHTML = nomnoml.renderSvg(source);
-        //nodes[i].firstChild.setAttribute('viewBox', '0 0 100 100');
+        let canvas = document.createElement('canvas');
+
+        nomnoml.draw(canvas, source);
+        nodes[i].textContent = '';
+        nodes[i].appendChild(canvas)
+
     }
     Reveal.layout();
 
