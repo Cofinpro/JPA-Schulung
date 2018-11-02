@@ -18,9 +18,10 @@
 ## Agenda
 
 * Advanced 
+  * Criteria-API
   * Advanced Mappings
   * Locking
-  * Transaktionen/Sessions
+  * Transaktionen
   * Events
   * Validierung
 * Performance
