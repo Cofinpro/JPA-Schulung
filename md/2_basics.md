@@ -5,7 +5,7 @@
 
 * JPA-Spec
   * in Java EE enthalten
-  * jpa-2.1-api-[VERSION].jar
+  * jpa-2.2-api-[VERSION].jar
 * Persistence Provider
   * durch Container bereitgestellt
   * hibernate-entitymanager-[VERSION].jar
@@ -46,8 +46,8 @@
 <persistence>
   <persistence-unit name="sample" 
                     transaction-type="RESOURCE_LOCAL">
-    <class>de.cofinpro.bookStore.Book</class>
-    <class>de.cofinpro.bookStore.Author</class>
+    <class>bb.see.Pirat</class>
+    <class>bb.see.Schiff</class>
     <properties>
 	  <property name="javax.persistence.jdbc.driver"
 				value="org.hsqldb.JdbcDriver"/>
@@ -109,9 +109,9 @@ mapping-orm.xml
 <?xml version="1.0" encoding="UTF-8"?>
 <entity-mappings ...>
 
-<package>com.mysite</package>
+<package>bb.see</package>
 
-<entity class="Book">
+<entity class="Pirat">
 ...
 </entity>
 </entity-mappings>
@@ -135,20 +135,20 @@ mapping-orm.xml
 
 ```java
 @Entity
-public class Book {
+public class Pirate {
 	
 	@Id @GeneratedValue
 	private Long id;
 	
 	@Basic(optional=false)
-	private String title;
+	private String name;
 	
-	private String author;
-	private int pages;
-	private double price;
+	private String bekanntAls;
+	private int kaperfahrten;
+	private double kopfgeld;
 	
 	@Temporal(TemporalType.DATE)
-	private Date published;
+	private Date letzterLandgang;
 }
 ```
 
@@ -170,17 +170,17 @@ beide Vorgehen gemischt verwendbar (seit JPA2)
 
 ```java
 @Entity @Access(AccessType.PROPERTY)
-public class Book {
+public class Pirate {
 	
-	@Basic private String title;
+	@Basic private String name;
 	
-	public String getTitle() {
-		if (title == null) { return "Unknown"; }
-		return title;
+	public String getName() {
+		if (title == null) { return "John Doe"; }
+		return name;
 	}
 	
-	public void setTitle(String title) {
-		this.title = title;
+	public void setName(String name) {
+		this.name = name;
 	}
 	/* [...] */
 }
@@ -315,7 +315,7 @@ Note:
 * Konfiguration über persistence.xml
 * initialisiert über statische Methode
   ```java
-  Persistence.createEntityManagerFactory("Bookstore");
+  Persistence.createEntityManagerFactory("Pirates");
   ```
 * Konstruktion sehr teuer!
 
@@ -324,7 +324,7 @@ Note:
 
 ```java
 EntityManagerFactory emf =
-  Persistence.createEntityManagerFactory("Bookstore");
+  Persistence.createEntityManagerFactory("Pirates");
 
 EntityManager em = emf.getEntityManager();
 
