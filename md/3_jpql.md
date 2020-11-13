@@ -77,7 +77,7 @@ SELECT p FROM Pirat p WHERE p.holzbeine=1
 
 ```sql
 Select p from Pirat p
-where p.shiff.name <> 'Black Pearl'
+where p.schiff.name <> 'Black Pearl'
 and p.papageien > ALL
     (Select p2.papageien from Pirat p2
     where p2.schiff.name = 'Black Pearl')
@@ -98,7 +98,7 @@ and p.papageien > ALL
 inner/outer analog zu SQL
 
 ```sql
-select c,p from Schiff s inner join s.crew p
+select s,p from Schiff s inner join s.crew p
 ```
 <small>liefert alle Piraten mit ihrem zugehörigen Schiff</small>
 
@@ -120,7 +120,7 @@ Select s from Schiff s where s.crew.holzbeine >= 1
 Pirat pirat = new Pirat("Pete");
 TypedQuery<Schiff> query =
     entityManager.createQuery(
-        "select p from Schiff s where s.captain = :captain",
+        "select s from Schiff s where s.captain = :captain",
          Schiff.class);
 query.setParameter("captain", pirat);
 ```
@@ -132,7 +132,7 @@ query.setParameter("captain", pirat);
 Query query = entityManager.
     createQuery("select p from Pirat p");
 @SuppressWarnings("unchecked")
-List<Pirat> books = query.getResultList();
+List<Pirat> piraten = query.getResultList();
 ```
 
 ```java
@@ -167,15 +167,14 @@ em.createNamedQuery("pirat.all",Pirat.class).getResultList();
 
 ```java
 public Pirat findPirate(String name) throws NonUniqueResultException {
-	try {
-		return entityManager.createQuery(
-            "select p from Pirat p where p.name = :name",
-             Pirat.class)
-        .setParameter("name", name)
-	    .getSingleResult();
-	} catch (NoResultException e) {
-		return null;
-	}
+    try {
+        return entityManager.createQuery(
+            "select p from Pirat p where p.name = :name",Pirat.class)
+            .setParameter("name", name)
+            .getSingleResult();
+    } catch (NoResultException e) {
+        return null;
+    }
 }
 ```
 
