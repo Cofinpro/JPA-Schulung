@@ -326,7 +326,7 @@ Note:
 EntityManagerFactory emf =
   Persistence.createEntityManagerFactory("Pirates");
 
-EntityManager em = emf.getEntityManager();
+EntityManager em = emf.createEntityManager();
 
 em.persist(...)
 em.merge(...)
@@ -339,7 +339,7 @@ em.refresh(...)
 ## Entity-Manager-Transactions
 
 ```java
-Transaction tx = EntityTransaction.getTransaction();
+Transaction tx = entityManager.getTransaction();
 try {
     tx.begin();
     /* ... */
